@@ -44,6 +44,12 @@ final class CodeLanguageTests: XCTestCase {
         XCTAssertEqual(Language.detect(filename: ".env.local"), .dotenv)           // prefix rule
     }
 
+    func testEnvrcIsBashNotDotenv() {
+        XCTAssertEqual(Language.detect(filename: ".envrc"), .bash)                 // direnv bash script
+        XCTAssertEqual(Language.detect(filename: ".env"), .dotenv)                 // exact name still dotenv
+        XCTAssertEqual(Language.detect(filename: ".env.staging"), .dotenv)         // .env.* prefix still dotenv
+    }
+
     func testDetectionIsCaseInsensitive() {
         XCTAssertEqual(Language.detect(filename: "MAIN.SWIFT"), .swift)
         XCTAssertEqual(Language.detect(filename: "DOCKERFILE"), .dockerfile)

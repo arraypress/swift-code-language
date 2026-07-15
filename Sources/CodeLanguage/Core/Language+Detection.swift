@@ -23,7 +23,7 @@ public extension Language {
         let name = filename.lowercased()
         if let l = Self.filenameMap[name] { return l }
         if name == "dockerfile" || name.hasPrefix("dockerfile.") { return .dockerfile }
-        if name.hasPrefix(".env") { return .dotenv }
+        if name == ".env" || name.hasPrefix(".env.") { return .dotenv }
         for (ext, lang) in Self.compoundExtensionMap where name.hasSuffix("." + ext) { return lang }
         if let dot = name.lastIndex(of: "."), dot < name.index(before: name.endIndex) {
             let ext = String(name[name.index(after: dot)...])
@@ -534,6 +534,7 @@ public extension Language {
         ".env.local": .dotenv,
         ".env.production": .dotenv,
         ".env.test": .dotenv,
+        ".envrc": .bash,
         ".eslintignore": .gitignore,
         ".eslintrc.json": .jsonc,
         ".exrc": .vimscript,
