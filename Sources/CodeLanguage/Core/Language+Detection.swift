@@ -19,6 +19,11 @@ public extension Language {
     }
 
     /// Detects the language from a bare filename (e.g. `"main.swift"`, `"Makefile"`, `".env"`).
+    ///
+    /// Matching is case-insensitive and applies rules in precedence order:
+    /// exact filename (`Makefile`, `tsconfig.json`) → prefix rules
+    /// (`Dockerfile.*`, `.env.*`) → compound extensions (`.blade.php`) →
+    /// plain last extension. Returns ``plainText`` when nothing matches.
     static func detect(filename: String) -> Language {
         let name = filename.lowercased()
         if let l = Self.filenameMap[name] { return l }
@@ -32,6 +37,7 @@ public extension Language {
         return .plainText
     }
 
+    /// Lowercased last-path-extension → language (the lowest-precedence rule).
     internal static let extensionMap: [String: Language] = [
         "a51": .assembly,
         "abap": .abap,
@@ -510,11 +516,13 @@ public extension Language {
         "zsh": .zsh,
     ]
 
+    /// Multi-component extensions (matched as `.suffix`) that beat the plain extension map.
     internal static let compoundExtensionMap: [String: Language] = [
         "blade.php": .blade,
         "html.erb": .erb,
     ]
 
+    /// Exact (lowercased) filenames — the highest-precedence rule.
     internal static let filenameMap: [String: Language] = [
         ".babelrc": .json,
         ".babelrc.json": .jsonc,

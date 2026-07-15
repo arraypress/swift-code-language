@@ -19,6 +19,7 @@ public struct BlockComment: Sendable, Equatable {
     /// The closing delimiter, e.g. `"*/"`.
     public let close: String
 
+    /// Creates a delimiter pair from its opening and closing tokens.
     public init(open: String, close: String) {
         self.open = open
         self.close = close

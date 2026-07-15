@@ -24,14 +24,20 @@ public extension Language {
     /// The coarse syntactic family, used for fallback highlighting.
     var family: HighlightFamily { Self.metadata[self]?.family ?? .plain }
 
-    /// Per-language metadata record.
+    /// Per-language metadata record backing ``displayName``, ``family``,
+    /// ``lineCommentToken``, and ``blockComment``.
     struct Meta: Sendable {
+        /// Human-readable name, e.g. `"C++"`.
         let name: String
+        /// Coarse syntactic family for fallback highlighting.
         let family: HighlightFamily
+        /// Line-comment token, or `nil` if the language has none.
         let lineComment: String?
+        /// Block-comment delimiters, or `nil` if the language has none.
         let block: BlockComment?
     }
 
+    /// One metadata row per language; accessors fall back to `rawValue` / `.plain` / `nil` if a row is missing.
     internal static let metadata: [Language: Meta] = [
         .abap: Meta(name: "ABAP", family: .plain, lineComment: "\"", block: nil),
         .actionscript: Meta(name: "ActionScript", family: .cLike, lineComment: "//", block: BlockComment(open: "/*", close: "*/")),
