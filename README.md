@@ -24,7 +24,7 @@ Filename → programming-language detection for a 217-case catalog of source, ma
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/arraypress/swift-code-language.git", from: "1.0.0")
+    .package(url: "https://github.com/Sidewatch/swift-code-language.git", from: "1.0.0")
 ]
 ```
 
