@@ -44,6 +44,19 @@ final class CodeLanguageTests: XCTestCase {
         XCTAssertEqual(Language.detect(filename: ".env.local"), .dotenv)           // prefix rule
     }
 
+    func testDetectsExtensionlessJSONLockAndConfigFiles() {
+        // These are JSON by content but carry no `.json` extension, so they'd fall to
+        // plain text without an exact-filename rule.
+        XCTAssertEqual(Language.detect(filename: "Package.resolved"), .json)   // SwiftPM lock
+        XCTAssertEqual(Language.detect(filename: "Pipfile.lock"), .json)       // Python
+        XCTAssertEqual(Language.detect(filename: "flake.lock"), .json)         // Nix
+        XCTAssertEqual(Language.detect(filename: "deno.lock"), .json)          // Deno
+        XCTAssertEqual(Language.detect(filename: "bun.lock"), .jsonc)          // Bun (JSONC)
+        XCTAssertEqual(Language.detect(filename: ".swcrc"), .json)
+        XCTAssertEqual(Language.detect(filename: ".stylelintrc"), .json)
+        XCTAssertEqual(Language.detect(filename: ".arcconfig"), .json)
+    }
+
     func testEnvrcIsBashNotDotenv() {
         XCTAssertEqual(Language.detect(filename: ".envrc"), .bash)                 // direnv bash script
         XCTAssertEqual(Language.detect(filename: ".env"), .dotenv)                 // exact name still dotenv
