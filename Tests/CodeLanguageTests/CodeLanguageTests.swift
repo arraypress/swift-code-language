@@ -44,6 +44,14 @@ final class CodeLanguageTests: XCTestCase {
         XCTAssertEqual(Language.detect(filename: ".env.local"), .dotenv)           // prefix rule
     }
 
+    func testDetectsMarkdownVariants() {
+        for name in ["README.md", "notes.markdown", "a.mdown", "b.mdwn", "c.mkd", "d.mkdn",
+                     "on-writing-less.mdoc"] {                                     // Markdoc → Markdown
+            XCTAssertEqual(Language.detect(filename: name), .markdown, "for \(name)")
+        }
+        XCTAssertEqual(Language.detect(filename: "page.mdx"), .mdx)               // MDX stays its own language
+    }
+
     func testDetectsExtensionlessJSONLockAndConfigFiles() {
         // These are JSON by content but carry no `.json` extension, so they'd fall to
         // plain text without an exact-filename rule.

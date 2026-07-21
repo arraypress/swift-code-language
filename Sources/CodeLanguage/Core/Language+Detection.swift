@@ -271,6 +271,7 @@ public extension Language {
         "marko": .marko,
         "mawk": .awk,
         "md": .markdown,
+        "mdoc": .markdown,   // Markdoc (Markdown superset) — highlight + preview as Markdown
         "mdown": .markdown,
         "mdwn": .markdown,
         "mdx": .mdx,
